@@ -21,15 +21,20 @@
         name: "{{ container_name }}"
         state: absent
 
-    - name: 3. Start the new container from the pulled image
+    - name: 3. Start the container in the background
       community.docker.docker_container:
         name: "{{ container_name }}"
         image: "{{ image_name }}"
         state: started
-        # The following two options are the equivalent of 'docker run -it'
-        # This is CRUCIAL the interactive command-line app to work.
         interactive: yes
         tty: yes
-        # Run in the foreground so we see the output in the Jenkins log
-        detach: no
+        detach: yes
+
+    - name: 4. Open a new GNOME Terminal and attach to the container
+      ansible.builtin.command:
+        cmd: gnome-terminal -- docker attach {{ container_name }}
+      delegate_to: localhost
+      become: no
+      environment:
+        DISPLAY: ":0"
 
