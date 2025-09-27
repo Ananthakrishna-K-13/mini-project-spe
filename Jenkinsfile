@@ -5,6 +5,7 @@ pipeline {
         DOCKERHUB_USERNAME = 'ananthak22'
         IMAGE_NAME = "${env.DOCKERHUB_USERNAME}/calculator"
         IMAGE_TAG = "latest" 
+        CONTAINER_NAME = 'calculator_container'
     }
 
     stages {
