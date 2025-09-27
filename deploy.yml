@@ -1,0 +1,35 @@
+---
+- name: Deploy Docker Container
+
+  hosts: all
+ 
+  become: yes
+
+  vars:
+
+    image_name: "ananthak22/calculator:latest"
+    container_name: "calculator_container"
+
+  tasks:
+    - name: 1. Pull the latest Docker image from Docker Hub
+      community.docker.docker_image:
+        name: "{{ image_name }}"
+        source: pull
+
+    - name: 2. Stop and remove any existing container of the same name
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+
+    - name: 3. Start the new container from the pulled image
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: started
+        # The following two options are the equivalent of 'docker run -it'
+        # This is CRUCIAL the interactive command-line app to work.
+        interactive: yes
+        tty: yes
+        # Run in the foreground so we see the output in the Jenkins log
+        detach: no
+

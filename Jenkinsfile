@@ -42,6 +42,16 @@ pipeline {
                 }
             }
         }
+
+        //deploy using ansible
+        stage('Deploy with Ansible') {
+            steps {
+                script {
+                    echo "--- Deploying application using Ansible ---"
+                    sh "ansible-playbook -i inventory.ini deploy.yml --extra-vars 'image_name=${IMAGE_NAME}:${IMAGE_TAG}'"
+                }
+            }
+        }
     }
 
     post {
