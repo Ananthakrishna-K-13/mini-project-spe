@@ -43,7 +43,7 @@ public class Calculator {
         System.out.print("Press any key and Enter to start the calculator: ");
         scanner.nextLine(); // Consumes the user's keystroke and waits for Enter
         int choice = 0;
-        System.out.println("\n---------Calculator----------");
+        // System.out.println("\n---------Calculator----------");
 
         while (choice != 5) {
             printMenu();
