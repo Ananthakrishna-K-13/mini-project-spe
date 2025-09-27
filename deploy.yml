@@ -2,11 +2,11 @@
 - name: Deploy Docker Container
 
   hosts: all
- 
+  
   become: yes
 
   vars:
-
+  
     image_name: "ananthak22/calculator:latest"
     container_name: "calculator_container"
 
@@ -21,20 +21,12 @@
         name: "{{ container_name }}"
         state: absent
 
-    - name: 3. Start the container in the background
+    - name: 3. Start the new container from the pulled image
       community.docker.docker_container:
         name: "{{ container_name }}"
         image: "{{ image_name }}"
         state: started
         interactive: yes
         tty: yes
-        detach: yes
-
-    - name: 4. Open a new GNOME Terminal and attach to the container
-      ansible.builtin.command:
-        cmd: gnome-terminal -- docker attach {{ container_name }}
-      delegate_to: localhost
-      become: no
-      environment:
-        DISPLAY: ":0"
+        detach: no
 
