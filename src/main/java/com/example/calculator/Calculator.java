@@ -39,9 +39,11 @@ public class Calculator {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int choice = 0;
 
-        System.out.println("---------Calculator----------");
+        System.out.print("Press any key and Enter to start the calculator: ");
+        scanner.nextLine(); // Consumes the user's keystroke and waits for Enter
+        int choice = 0;
+        System.out.println("\n---------Calculator----------");
 
         while (choice != 5) {
             printMenu();
@@ -60,7 +62,7 @@ public class Calculator {
                         int factInput = scanner.nextInt();
                         System.out.println("Result: " + factorial(factInput));
                         break;
-                    case 3: 
+                    case 3:
                         System.out.print("Enter a number: ");
                         double logInput = scanner.nextDouble();
                         System.out.println("Result: " + naturalLog(logInput));
@@ -80,7 +82,7 @@ public class Calculator {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
-                scanner.next();
+                scanner.next(); // Clear the invalid input
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
             }
