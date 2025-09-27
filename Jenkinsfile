@@ -57,6 +57,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up...'
+            sh "docker rm -f ${CONTAINER_NAME} || true"
             sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
             cleanWs()
         }
