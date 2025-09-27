@@ -41,7 +41,7 @@ public class Calculator {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
-        System.out.println("--------Calculator---------");
+        System.out.println("---------Calculator----------");
 
         while (choice != 5) {
             printMenu();
