@@ -43,7 +43,7 @@ public class Calculator {
         System.out.print("Press any key and Enter to start the calculator: ");
         scanner.nextLine();
         int choice = 0;
-        System.out.println("\n---------Calculator----------");
+        System.out.println("\n----------Calculator-----------");
 
         while (choice != 5) {
             printMenu();
@@ -75,14 +75,14 @@ public class Calculator {
                         System.out.println("Result: " + power(base, exponent));
                         break;
                     case 5:
-                        System.out.println("Exiting. Goodbye!");
+                        System.out.println("Exiting");
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
-                scanner.next(); // Clear the invalid input
+                scanner.next();
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
             }
