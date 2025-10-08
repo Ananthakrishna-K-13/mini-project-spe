@@ -70,14 +70,13 @@ pipeline {
             }
         }
 
-        // This block runs if the pipeline fails
         failure {
             script {
                 echo 'Pipeline failed. Sending notification...'
                 emailext (
-                    subject: "❌ FAILED: Pipeline '${env.JOB_NAME}' - Build #${env.BUILD_NUMBER}",
+                    subject: "FAILED: Pipeline '${env.JOB_NAME}' - Build #${env.BUILD_NUMBER}",
                     body: """<p>The pipeline <b>${env.JOB_NAME}</b> build #${env.BUILD_NUMBER} failed.</p>
-                               <p>Check the build console output for errors: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                               <p>Check the build console output for errors: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
                     to: "${env.EMAIL_RECIPIENTS}",
                     mimeType: 'text/html'
                 )
