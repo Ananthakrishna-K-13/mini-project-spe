@@ -4,8 +4,9 @@ pipeline {
     environment {
         DOCKERHUB_USERNAME = 'ananthak22'
         IMAGE_NAME = "${env.DOCKERHUB_USERNAME}/calculator"
-        IMAGE_TAG = "latest" 
+        IMAGE_TAG = "latest"
         CONTAINER_NAME = 'calculator_container'
+        EMAIL_RECIPIENTS = 'Ananthakrishna.K@iiitb.ac.in'
     }
 
     stages {
@@ -48,7 +49,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 script {
-                    echo "--- Deploying application using Ansible ---"
+                    echo "Deploying application using Ansible"
                     sh "ansible-playbook -i inventory.ini deploy.yml --extra-vars 'image_name=${IMAGE_NAME}:${IMAGE_TAG}'"
                 }
             }
@@ -56,12 +57,38 @@ pipeline {
     }
 
     post {
+        success {
+            script {
+                echo 'Pipeline was successful. Sending notification...'
+                emailext (
+                    subject: "SUCCESS: Pipeline '${env.JOB_NAME}' - Build #${env.BUILD_NUMBER}",
+                    body: """<p>The pipeline <b>${env.JOB_NAME}</b> build #${env.BUILD_NUMBER} completed successfully.</p>
+                               <p>Check the build output here: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                    to: "${env.EMAIL_RECIPIENTS}",
+                    mimeType: 'text/html'
+                )
+            }
+        }
+
+        // This block runs if the pipeline fails
+        failure {
+            script {
+                echo 'Pipeline failed. Sending notification...'
+                emailext (
+                    subject: "❌ FAILED: Pipeline '${env.JOB_NAME}' - Build #${env.BUILD_NUMBER}",
+                    body: """<p>The pipeline <b>${env.JOB_NAME}</b> build #${env.BUILD_NUMBER} failed.</p>
+                               <p>Check the build console output for errors: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    to: "${env.EMAIL_RECIPIENTS}",
+                    mimeType: 'text/html'
+                )
+            }
+        }
+
         always {
             echo 'Cleaning up...'
             sh "docker rm -f ${CONTAINER_NAME} || true"
-            sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+            sh "docker rmi -f ${IMAGE_NAME}:${IMAGE_TAG} || true" // Added -f to force removal
             cleanWs()
         }
     }
 }
-
