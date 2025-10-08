@@ -6,7 +6,7 @@ pipeline {
         IMAGE_NAME = "${env.DOCKERHUB_USERNAME}/calculator"
         IMAGE_TAG = "latest"
         CONTAINER_NAME = 'calculator_container'
-        EMAIL_RECIPIENTS = 'Ananthakrishna.K@iiitb.ac.in'
+        EMAIL_RECIPIENTS = 'ananthakk26@gmail.com'
     }
 
     stages {
